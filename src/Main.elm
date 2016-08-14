@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html, Attribute, button, div, input, text)
+import Html exposing (Html, Attribute, button, div, input, text, ul, li)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (..)
 import Html.App
@@ -57,14 +57,23 @@ nextItem list =
 type Msg = Change String | Calculate
 
 
--- View
+-- VIEW
+
+listItem : a -> Html Msg
+listItem item =
+  li [] [text (toString item)]
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ input [placeholder "Number to calculate", onInput Change ] [] 
-        , button [ onClick Calculate ] [ text "Calculate" ]
-        , text ( toString model)
+    div [id "container"]
+        [
+        div [id "inputBox"]
+            [ input [placeholder "Number to calculate", onInput Change ] [] 
+            , button [ onClick Calculate ] [ text "Calculate" ]
+            ]
+        , div [id "outputBox"] 
+            [ text "Output:" 
+            , ul [] (List.map listItem model.list) ]
         ]
 
 
