@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Collatz Conjecture in Elm!</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 0 auto !important;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      #inputBox{
+        width: 300px;
+        margin: auto;
+      }
+
+      input {
+        height: 50px;
+        font-size: 15pt;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>The Collatz Conjecture (in elm!)</h1>
+    <p>"Start with any number. If it's even, divide by two. If it's odd, muliply by 3 and add one. Repeat. All numbers will eventually become 1.</p>
+    <p>To-do's:</p>
+    <ul>
+      <li>Display results as they are computed (instead of generating the whole list)</li>
+      <li>Record-keeping (highest "jump", longest chain, most steps before reaching max, etc)</li>
+      <li>Store the whole tree and update it each new try</li>
+      <li>Some (visual|audio)-ization.</li>
+      <li>Make it pretty!</li>
+    </ul>
+    <div id="main"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
