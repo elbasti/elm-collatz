@@ -5,16 +5,13 @@ import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (..)
 import Html.App
 import String
+import List.Extra
 
 -- Model
 
-type alias CollatzList =
-    List Int
-
-
 type alias Model = 
     { valueToChange : Int
-    , list : CollatzList
+    , list : List Int 
     }
 
 
@@ -28,29 +25,30 @@ init =
 
 isEven : Int -> Bool
 isEven int =
-    if (%) int 2 == 0 then
-       True
-       
+    (%) int 2 == 0
+
+
+collatz : Int -> Maybe (Int, Int)
+collatz n = 
+    -- Read comment to collatzSequence to understand the type signature
+    if n == 1 then 
+        Nothing
+
+    else if isEven n then
+        let res = (n // 2) in
+            Just (res, res)
+
     else
-       False
+        let res = ((n * 3) + 1) in 
+            Just (res, res)
 
 
-nextItem : CollatzList -> CollatzList
-nextItem list = 
-    -- If list is empty, default to `1`
-    let
-        tail = case List.head (List.reverse list) of
-                Nothing -> 1 
-                Just a -> a
-
-    in
-       if tail == 1 then 
-          list -- Stop if 1 
-       else if isEven tail then
-           List.append list (nextItem [tail // 2])
-       else 
-           List.append list (nextItem [1 + (3 * tail)])
-
+collatzSequence : Int -> List Int
+collatzSequence int = 
+        -- unfoldr will apply collatz to int.
+        -- It expects Maybe (a, b). If a is not nothing, it will apply 
+        -- collatz again to b
+        (List.Extra.unfoldr collatz int)
 
 -- Messages
 
@@ -84,7 +82,7 @@ update msg model =
     case msg of
         Calculate -> 
             let 
-                newList = List.append [model.valueToChange] [] |> nextItem 
+                newList = collatzSequence model.valueToChange 
             in
                 ( { model | list = newList}, Cmd.none )
 
